@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!--<link href="/styles/style.css" rel="stylesheet">-->
+</head>
+<body>
+<main>
+    <fieldset>
+        <form method="post" action="/twaddle/user/login">
+            <label for="loginName">User name: </label>
+            <input type="text" name="loginName" id="loginName"></input>
+            <label for="loginPass">Password: </label>
+            <input type="text" name="loginPass" id="loginPass"></input>
+            <button type="submit">Absenden</button>
+        </form>
+    </fieldset>
+</main>
+</body>
+</html>

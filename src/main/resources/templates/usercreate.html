@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create User</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!--<link href="/styles/style.css" rel="stylesheet">-->
+</head>
+<body>
+<main>
+    <fieldset>
+        <form method="post" action="/twaddle/user/create">
+            <label for="userName">User name: </label>
+            <input type="text" name="userName" id="userName"></input>
+            <label for="passwd">Password: </label>
+            <input type="text" name="passwd" id="passwd"></input>
+            <label for="passwdwdh">Password wiederholen: </label>
+            <input type="text" name="passwdwdh" id="passwdwdh"></input>
+            <button type="submit">Absenden</button>
+        </form>
+    </fieldset>
+</main>
+</body>
+</html>
