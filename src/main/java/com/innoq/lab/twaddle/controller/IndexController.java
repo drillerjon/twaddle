@@ -1,23 +1,24 @@
 package com.innoq.lab.twaddle.controller;
 
+import com.innoq.lab.twaddle.model.User;
+import com.innoq.lab.twaddle.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-import java.util.*;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMappingName;
 
 @Controller
-public class IndexController
-{
+public class IndexController {
 
-   private static ArrayList<String> userList = new ArrayList<String>();
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping(name = "index", value = "/twaddle")
     public String index(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
@@ -25,89 +26,58 @@ public class IndexController
         return "index";
     }
 
-    @GetMapping("/twaddle/user/add")
+    @GetMapping(name = "user-form", value = "/twaddle/user/add")
     public String addUser() {
-
-        return "usercreate";
+        return "user";
     }
 
-    @GetMapping("/twaddle/user/login")
-    public String loginUser() {
+    @GetMapping(name = "user-detail", value = "/twaddle/user/{id}")
+    public String showUser(@PathVariable("id") Long id, Model model) {
+        User user = userRepository.findOne(id);
 
-        return "userlogin";
+        if (user != null) {
+            model.addAttribute("name", user.getUserName());
+        }
+        return "userDetails";
     }
 
+    @GetMapping(name = "user-list", value = "/twaddle/user")
+    public String listUsers(Model model) {
+        Iterable<User> users = userRepository.findAll();
+
+        if (users.iterator().hasNext()) {
+            List<User> userList = new ArrayList<>();
+            users.iterator().forEachRemaining(userList::add);
+            model.addAttribute("users", userList);
+        }
+        return "userList";
+    }
 
     @PostMapping("/twaddle/user/create")
     public ModelAndView createUser(@ModelAttribute UserForm userForm) {
-        String UserName = userForm.getUserName();
-        String firstPsw = userForm.getPasswd();
-        String secondPsw = userForm.getPasswdwdh();
+        System.out.println("Username: " + userForm.getUserName());
+        System.out.println("Passwd:   " + userForm.getPasswd());
 
-        if(userList.contains(UserName)){
-            System.out.println("Dein gewünschter Username ist bereits vergeben");
-        }
-        else if(!firstPsw.equals(secondPsw)) {
+        if(!userForm.getPasswd().equals(userForm.getPasswdwdh()) || userForm.getPasswd().equals("") ) {
             System.out.println("Das Passwort wurde nicht korrekt wiederholt");
+            return new ModelAndView(new RedirectView(fromMappingName("user-form").build()));
+        }
+        else if(userForm.getUserName() == null || userForm.getUserName().equals("")) {
+            System.out.println("Du musst einen Benutzernamen angeben");
+            return new ModelAndView(new RedirectView(fromMappingName("user-form").build()));
+
         }
         else{
-            userList.add (userForm.getUserName());
-            userList.add (userForm.getPasswd());;
+            User user = userRepository.save(new User(userForm.getUserName(), userForm.getPasswd()));
+            return new ModelAndView(new RedirectView(fromMappingName("user-list").build()));
         }
 
-        System.out.println(userList);
-        return new ModelAndView(new RedirectView(fromMappingName("index").arg(0, userForm.getUserName()).build()));
-    }
-
-    @PostMapping("/twaddle/user/login")
-    public ModelAndView login(@ModelAttribute LoginForm loginForm) {
-        int pos_pass;
-        String pass = loginForm.getLoginPass();
-        int uname_pos = userList.indexOf(loginForm.getLoginName());
-        pos_pass = ++uname_pos;
-        String password = userList.get(pos_pass);
-
-
-            if (password.equals(pass)){
-                System.out.println("Angemeldet");
-
-
-
-            }
-            else {
-                System.out.println("Falsches Passwort oder falscher");
-            }
-
-
-        return new ModelAndView(new RedirectView(fromMappingName("index").arg(0, loginForm.getLoginName()).build()));
-    }
-    public static class LoginForm{
-        private String loginName;
-
-        public String getLoginName() {
-            return loginName;
-        }
-
-        public void setLoginName(String loginName) {
-            this.loginName = loginName;
-        }
-
-        public String getLoginPass() {
-            return loginPass;
-        }
-
-        public void setLoginPass(String loginPass) {
-            this.loginPass = loginPass;
-        }
-
-        private String loginPass;
     }
 
     public static class UserForm {
         private String userName;
         private String passwd;
         private String passwdwdh;
-
         public String getPasswdwdh() {
             return passwdwdh;
         }
@@ -132,6 +102,4 @@ public class IndexController
             this.userName = userName;
         }
     }
-
-
 }

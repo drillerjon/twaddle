@@ -5,8 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p th:text="'Hello, ' + ${name} + '!'" />
 
-<a href="/twaddle/user/add">Create User</a>
+<ul>
+    <th:block th:each="user : ${users}">
+        <li><a th:href="@{'/twaddle/user/' + ${user.id}}" th:text="${user.userName}"></a></li>
+    </th:block>
+</ul>
+
+<a href="/twaddle">Home</a>
 </body>
 </html>
