@@ -35,3 +35,6 @@ input:focus, textarea:focus {
 button {
   margin-left: .5em;
 }
+#msg {
+  size: 200px;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create User</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    </link>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    </link>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous">
+    </script>
+</head>
+<body>
+<main>
+    <center>
+    <div class="row">
+        <div>
+            <span th:text="${message}">Message</span>
+        </div>
+
+        <form method="post" action="/twaddle/user/create" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="userName">User name: </label>
+                <input type="text" name="userName" id="userName"></input>
+                <label for="passwd">Password: </label>
+                <input type="password" name="passwd" id="passwd"></input>
+                <label for="passwd2">repeat Password: </label>
+                <input type="password" name="passwd2" id="passwd2"></input>
+                <button type="submit" class="btn btn-primary">Absenden</button>
+            </div>
+        </form>
+    </div>
+    </center>
+</main>
+</body>
+</html>

@@ -15,9 +15,21 @@
     </script>
 </head>
 <body>
-<p th:text="'Hello, ' + ${name} + '!'" />
-
-<a href="/twaddle/user/add">Create User</a>
-<a href="/twaddle/login">Login</a>
+<CENTER>
+    <main>
+        <div>
+            <span th:text="${message}">Message</span>
+        </div>
+        <fieldset>
+            <form method="post" action="/twaddle/user/login">
+                <label for="userName">User name: </label>
+                <input type="text" name="userName" id="userName"></input>
+                <label for="password">Password: </label>
+                <input type="password" name="password" id="password"></input>
+                <button type="submit">Absenden</button>
+            </form>
+        </fieldset>
+    </main>
+</CENTER>
 </body>
 </html>
